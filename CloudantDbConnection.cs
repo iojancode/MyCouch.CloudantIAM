@@ -16,10 +16,7 @@ namespace MyCouch.CloudantIAM
 
         public CloudantDbConnection(CloudantDbConnectionInfo connectionInfo) : base(connectionInfo) 
         { 
-            if (connectionInfo.ApikeyAuth != null)
-            {
-                _apiKeyAuth = connectionInfo.ApikeyAuth;
-            }
+            _apiKeyAuth = connectionInfo.ApikeyAuth;
         }
 
         public override async Task<HttpResponseMessage> SendAsync(HttpRequest httpRequest, CancellationToken cancellationToken = default)

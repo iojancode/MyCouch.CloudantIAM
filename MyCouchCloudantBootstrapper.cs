@@ -4,12 +4,7 @@ namespace MyCouch.CloudantIAM
 {
     internal static class MyCouchCloudantBootstrappers
     {
-        internal static MyCouchCloudantBootstrapper Default { get; private set; }
-
-        static MyCouchCloudantBootstrappers()
-        {
-            Default = new MyCouchCloudantBootstrapper();
-        }
+        internal static MyCouchCloudantBootstrapper Default { get; } = new MyCouchCloudantBootstrapper();
     }
 
     public class MyCouchCloudantBootstrapper : MyCouchClientBootstrapper
