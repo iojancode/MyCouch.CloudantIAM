@@ -2,11 +2,11 @@ using System;
 
 namespace MyCouch.CloudantIAM
 {
-    public class CloudantApikey
+    public class ApikeyAuth
     {
         public string Apikey { get; private set; }
 
-        public CloudantApikey(string apikey)
+        public ApikeyAuth(string apikey)
         {
             Apikey = apikey;
         }

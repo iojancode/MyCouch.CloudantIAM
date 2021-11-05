@@ -1,6 +1,6 @@
 # MyCouch.CloudantIAM #
 
-MyCouch extended client for Cloudant IAM authentication method, mainly used for Cloudant Transaction Engine (TxE) https://cloud.ibm.com/docs/Cloudant?topic=Cloudant-overview-te
+MyCouch extended client for Cloudant IAM authentication methods, mainly used for Cloudant Transaction Engine (TxE) https://cloud.ibm.com/docs/Cloudant?topic=Cloudant-overview-te
 
 **Package** - [MyCouch.CloudantIAM](http://nuget.org/packages/mycouch.cloudantiam) | **Platforms** - .NET 4.5, netstandard2.0
 
@@ -9,7 +9,7 @@ Example using IAM authentication
 var client = new MyCouchCloudant("https://IAMApiKey@xxxxxxx-bluemix.cloudant.com", "mydb");
 ```
 
-Example using legacy credentials, for standard offerings
+Example using Cookie authentication, for standard offerings
 ```csharp
 var client = new MyCouchCloudant("https://user:password@xxxxxxx-bluemix.cloudant.com", "mydb");
 ```

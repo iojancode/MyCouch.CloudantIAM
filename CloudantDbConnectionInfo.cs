@@ -6,7 +6,8 @@ namespace MyCouch.CloudantIAM
 {
     public class CloudantDbConnectionInfo : DbConnectionInfo
     {
-        public CloudantApikey ApikeyAuth { get; set; }
+        public ApikeyAuth ApikeyAuth { get; set; }
+        public CookieAuth CookieAuth { get; set; }
 
         public CloudantDbConnectionInfo(string address, string dbName) : this(new Uri(address), dbName) { }
 
@@ -15,8 +16,8 @@ namespace MyCouch.CloudantIAM
             if (!string.IsNullOrWhiteSpace(address.UserInfo))
             {
                 var userInfoParts = ExtractUserInfoPartsFrom(address);
-                if (userInfoParts.Length == 2) BasicAuth = new BasicAuthString(userInfoParts[0], userInfoParts[1]);
-                else ApikeyAuth = new CloudantApikey(userInfoParts[0]);
+                if (userInfoParts.Length == 2) CookieAuth = new CookieAuth(userInfoParts[0], userInfoParts[1]);
+                else ApikeyAuth = new ApikeyAuth(userInfoParts[0]);
             }
         }
 
