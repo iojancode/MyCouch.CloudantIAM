@@ -4,11 +4,11 @@
     <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
     <Description>MyCouch extended client for Cloudant IAM authentication methods</Description>
     <PackageId>MyCouch.CloudantIAM</PackageId>
-    <PackageTags>couchdb;mycouch;cloudant;iam;txe</PackageTags>
+    <PackageTags>mycouch;couchdb;cloudant;iam;txe</PackageTags>
     <PackageIconUrl>https://raw.githubusercontent.com/danielwertheim/mycouch/master/resources/mycouch-nuget.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/iojancode/MyCouch.CloudantIAM</RepositoryUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <Version>1.1.0</Version>
+    <Version>1.1.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
