@@ -7,6 +7,7 @@ using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 using MyCouch.Net;
+using MyCouch.Extensions;
 using Newtonsoft.Json;
 
 namespace MyCouch.CloudantIAM
@@ -23,30 +24,18 @@ namespace MyCouch.CloudantIAM
             _cookieAuth = connectionInfo.CookieAuth;
         }
 
-        public override async Task<HttpResponseMessage> SendAsync(HttpRequest httpRequest, CancellationToken cancellationToken = default)
+        protected override bool ShouldFollowResponse(HttpResponseMessage response)
         {
-            var response = await base.SendAsync(httpRequest, cancellationToken);
-            if (response.StatusCode == HttpStatusCode.Unauthorized && await AuthorizeAsync()) 
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                return await base.SendAsync(httpRequest, cancellationToken);
-            }
-            else
-            {
-                return response;
-            }
-        }
+                bool authorized = AuthorizeAsync().ForAwait().GetAwaiter().GetResult();
+                if (!authorized) return false;
 
-        public override async Task<HttpResponseMessage> SendAsync(HttpRequest httpRequest, HttpCompletionOption completionOption, CancellationToken cancellationToken = default)
-        {
-            var response = await base.SendAsync(httpRequest, completionOption, cancellationToken);
-            if (response.StatusCode == HttpStatusCode.Unauthorized && await AuthorizeAsync())
-            {
-                return await base.SendAsync(httpRequest, completionOption, cancellationToken);
+                response.Headers.Location = response.RequestMessage.RequestUri;
+                return true;
             }
-            else 
-            {
-                return response;
-            }
+
+            return base.ShouldFollowResponse(response);
         }
 
         private async Task<bool> AuthorizeAsync()
@@ -65,10 +54,10 @@ namespace MyCouch.CloudantIAM
                     }))
                     {
                         var request = new HttpRequestMessage { Method = HttpMethod.Post, Content = content };
-                        var response = await client.SendAsync(request);
+                        var response = await client.SendAsync(request).ForAwait();
                         if (!response.IsSuccessStatusCode) return false;
 
-                        var credentials = JsonConvert.DeserializeObject<CloudantCredentials>(await response.Content.ReadAsStringAsync());
+                        var credentials = JsonConvert.DeserializeObject<CloudantCredentials>(await response.Content.ReadAsStringAsync().ForAwait());
                         base.HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(credentials.TokenType, credentials.AccessToken);
                         return true;
                     }
@@ -89,7 +78,7 @@ namespace MyCouch.CloudantIAM
                     }))
                     {
                         var request = new HttpRequestMessage { Method = HttpMethod.Post, Content = content };
-                        var response = await client.SendAsync(request);
+                        var response = await client.SendAsync(request).ForAwait();
                         if (!response.IsSuccessStatusCode) return false;
 
                         base.HttpClient.DefaultRequestHeaders.Remove("Cookie");
