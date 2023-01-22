@@ -6,15 +6,14 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
-using MyCouch.Net;
 using MyCouch.Extensions;
+using MyCouch.Net;
 using Newtonsoft.Json;
 
 namespace MyCouch.CloudantIAM
 {
     public class CloudantDbConnection : DbConnection
     {
-        private SemaphoreSlim _semaphore = new SemaphoreSlim(1);
         private ApikeyAuth _apikeyAuth;
         private CookieAuth _cookieAuth;
 
@@ -81,10 +80,13 @@ namespace MyCouch.CloudantIAM
                         var response = await client.SendAsync(request).ForAwait();
                         if (!response.IsSuccessStatusCode) return false;
 
-                        base.HttpClient.DefaultRequestHeaders.Remove("Cookie");
-                        if (GetFirstCookie(response, out string cookie) &&
-                            base.HttpClient.DefaultRequestHeaders.TryAddWithoutValidation("Cookie", cookie)) return true;
-                        else return false;
+                        lock (base.HttpClient)
+                        {
+                            base.HttpClient.DefaultRequestHeaders.Remove("Cookie");
+                            if (GetFirstCookie(response, out string cookie) &&
+                                base.HttpClient.DefaultRequestHeaders.TryAddWithoutValidation("Cookie", cookie)) return true;
+                            else return false;
+                        }
                     }
                 }
             }
