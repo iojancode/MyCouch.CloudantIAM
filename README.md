@@ -2,7 +2,7 @@
 
 MyCouch extended client for Cloudant authentication methods, supports IAM ApiKey or Cookie based legacy credentials: https://cloud.ibm.com/docs/Cloudant?topic=Cloudant-managing-access-for-cloudant
 
-**Package** - [MyCouch.CloudantIAM](http://nuget.org/packages/mycouch.cloudantiam) | **Platforms** - .NET 4.5, netstandard2.0
+**Package** - [MyCouch.CloudantIAM](http://nuget.org/packages/mycouch.cloudantiam) | **Platforms** - netstandard2.0, netstandard1.0
 
 Example using IAM authentication
 ```csharp

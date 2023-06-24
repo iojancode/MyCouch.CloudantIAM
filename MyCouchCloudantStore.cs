@@ -2,7 +2,7 @@ using System;
 
 namespace MyCouch.CloudantIAM
 {
-    public class MyCouchCloudantStore : MyCouchStore
+    public class MyCouchCloudantStore : MyCouchStore, IMyCouchStore, IDisposable
     {
         public MyCouchCloudantStore(string serverAddress, string dbName = null) : this(new MyCouchCloudant(serverAddress, dbName)) { }
 

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Threading;
 using System.Threading.Tasks;
 using MyCouch.Extensions;
 using MyCouch.Net;
@@ -12,10 +11,10 @@ using Newtonsoft.Json;
 
 namespace MyCouch.CloudantIAM
 {
-    public class CloudantDbConnection : DbConnection
+    public class CloudantDbConnection : DbConnection, IDbConnection, IConnection, IDisposable
     {
-        private ApikeyAuth _apikeyAuth;
-        private CookieAuth _cookieAuth;
+        private readonly ApikeyAuth _apikeyAuth;
+        private readonly CookieAuth _cookieAuth;
 
         public CloudantDbConnection(CloudantDbConnectionInfo connectionInfo) : base(connectionInfo) 
         { 
