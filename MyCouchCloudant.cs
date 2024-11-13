@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 
 namespace MyCouch.CloudantIAM
 {
@@ -12,5 +13,7 @@ namespace MyCouch.CloudantIAM
 
         public MyCouchCloudant(CloudantDbConnectionInfo connectionInfo, MyCouchCloudantBootstrapper bootstrapper = null)
             : base(connectionInfo, bootstrapper ?? MyCouchCloudantBootstrappers.Default) { }
+
+        public async Task<bool> AuthorizeAsync() => await ((CloudantDbConnection)this.Connection).AuthorizeAsync();
     }
 }

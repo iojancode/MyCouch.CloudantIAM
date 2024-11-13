@@ -32,3 +32,4 @@ bld/
 
 # .NET core
 project.lock.json
+.DS_Store

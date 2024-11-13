@@ -11,8 +11,7 @@ namespace MyCouch.CloudantIAM
     {
         public MyCouchCloudantBootstrapper()
         {
-            DbConnectionFn = cnInfo => new CloudantDbConnection(
-                (cnInfo as CloudantDbConnectionInfo) ?? throw new InvalidCastException("Cannot cast to CloudantDbConnectionInfo"));
+            DbConnectionFn = cnInfo => new CloudantDbConnection((CloudantDbConnectionInfo)cnInfo);
         }
     }
 }

@@ -5,7 +5,6 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using MyCouch.Extensions;
 using MyCouch.Net;
 using Newtonsoft.Json;
 
@@ -26,7 +25,7 @@ namespace MyCouch.CloudantIAM
         {
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                bool authorized = AuthorizeAsync().ForAwait().GetAwaiter().GetResult();
+                bool authorized = AuthorizeAsync().GetAwaiter().GetResult();
                 if (!authorized) return false;
 
                 response.Headers.Location = response.RequestMessage.RequestUri;
@@ -36,7 +35,7 @@ namespace MyCouch.CloudantIAM
             return base.ShouldFollowResponse(response);
         }
 
-        private async Task<bool> AuthorizeAsync()
+        public async Task<bool> AuthorizeAsync()
         {
             if (_apikeyAuth != null)
             {
@@ -52,10 +51,10 @@ namespace MyCouch.CloudantIAM
                     }))
                     {
                         var request = new HttpRequestMessage { Method = HttpMethod.Post, Content = content };
-                        var response = await client.SendAsync(request).ForAwait();
+                        var response = await client.SendAsync(request).ConfigureAwait(false);
                         if (!response.IsSuccessStatusCode) return false;
 
-                        var credentials = JsonConvert.DeserializeObject<CloudantCredentials>(await response.Content.ReadAsStringAsync().ForAwait());
+                        var credentials = JsonConvert.DeserializeObject<CloudantCredentials>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
                         lock (base.HttpClient)
                         {
                             base.HttpClient.DefaultRequestHeaders.Remove("Authorization");
@@ -80,7 +79,7 @@ namespace MyCouch.CloudantIAM
                     }))
                     {
                         var request = new HttpRequestMessage { Method = HttpMethod.Post, Content = content };
-                        var response = await client.SendAsync(request).ForAwait();
+                        var response = await client.SendAsync(request).ConfigureAwait(false);
                         if (!response.IsSuccessStatusCode) return false;
 
                         lock (base.HttpClient)
