@@ -56,7 +56,11 @@ namespace MyCouch.CloudantIAM
                         if (!response.IsSuccessStatusCode) return false;
 
                         var credentials = JsonConvert.DeserializeObject<CloudantCredentials>(await response.Content.ReadAsStringAsync().ForAwait());
-                        base.HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(credentials.TokenType, credentials.AccessToken);
+                        lock (base.HttpClient)
+                        {
+                            base.HttpClient.DefaultRequestHeaders.Remove("Authorization");
+                            base.HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(credentials.TokenType, credentials.AccessToken);
+                        }
                         return true;
                     }
                 }
